@@ -1,6 +1,7 @@
 # Reflashing an Araknis 5 Port Gigabit Switch (AN-110-SW-C-5) as a Netgear GS105E v2
 
 | ![Top side of board](images/board-top.jpg "Top side of board") | ![Bottom side of board](images/board-bottom.jpg "Bottom side of board") |
+|:-:|:-:|
 
 The Araknis AN-110-SW-C-5 is a 5 port Unmanaged+ gigabit network switch based on the RTL8367N switch controller. It supports Snap One's OvrC (oversee) cloud remote management solution. As is, the firmware is pretty bear-bones, including only some basic status information and an option to disable OvrC.
 
