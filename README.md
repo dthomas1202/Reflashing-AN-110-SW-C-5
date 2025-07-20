@@ -1,3 +1,4 @@
+
 # Reflashing an Araknis 5 Port Gigabit Switch (AN-110-SW-C-5) as a Netgear GS105E v2
 
 | ![Top side of board](images/board-top.jpg "Top side of board") | ![Bottom side of board](images/board-bottom.jpg "Bottom side of board") |
@@ -43,10 +44,11 @@ The MAC address of the switch is stored in the flash chip, we are overwriting th
 
 1. Open `gs105e_v2.bin` in your favorite hex editor (such as GHex).
 2. Jump to the offset `0xFC000`.
-3. Enter the MAC address of the switch (probably located on the sticker on the bottom of the device), and terminate it with a `0x00` byte. Note: do not enter the colon ":" separators. You are entering it as literal hex values (6 bytes + 1 for termination), not ascii.
-	With a MAC address of `11:22:33:AA:BB:CC` it should read as:
+3. Enter the MAC address of the switch (probably located on the sticker on the bottom of the device), and terminate it with a `0x00` byte. Note: do not enter the colon ":" separators. You are entering it as literal hex values, not ascii (6 bytes + 1 for termination).
+	
+	For example: with a MAC address of `11:22:33:AA:BB:CC` it should read as:
 	```
-	... FF FF FF FF 11 22 33 44 AA BB CC FF FF FF FF ...
+	... FF FF FF FF 11 22 33 44 AA BB CC 00 FF FF FF FF ...
 	                ^
 	                Offset: 0xFC000
 	```
@@ -56,7 +58,7 @@ The MAC address of the switch is stored in the flash chip, we are overwriting th
 
 Unfortunately, the firmware upgrade utility in the web interface does not seem to accept Netgear firmware files, so unless someone wants to figure out the secret sauce for that, we are stuck writing to the flash chip directly.
 
- 1. Grab your favorite SPI flash chip reader, or a Raspberry Pi and hook it up to the flash chip as shown below. It is easier to use an SOIC8/16 chip clip, but you can solder directly to the chip. You are not required to desolder the chip from the board before flashing. Also ensure your flashing tool supports 3.3 volt flash chips.
+ 1. Grab your favorite SPI flash chip reader, or a Raspberry Pi and hook it up to the flash chip as shown below. It is easier to use an SOIC8/16 chip clip, but you can just solder directly to the flash chip. You are not required to desolder the chip from the board before flashing. Ensure your flashing tool supports 3.3 volt flash chips.
 	Also verify that the flash chip is 16Mbit (2Mbyte), such as the Winbond W25Q16DV.
 
 	![Flash chip connections](images/flash-connections.jpg "Flash chip connections")
