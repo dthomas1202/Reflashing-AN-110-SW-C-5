@@ -1,14 +1,15 @@
 
+
 # Reflashing an Araknis 5 Port Gigabit Switch (AN-110-SW-C-5) as a Netgear GS105E v2
 
 | ![Top side of board](images/board-top.jpg "Top side of board") | ![Bottom side of board](images/board-bottom.jpg "Bottom side of board") |
 |:-:|:-:|
 
+This guide describes the process of converting the Araknis AN-110-SW-C-5, a basic unmanaged switch with cloud functionality, into a managed switch by reflashing it with firmware for a Netgear GS105E v2. The result is a switch with VLAN support, port mirroring, traffic statistics, QoS, and other managed features. While not all functions are guaranteed to work, most key features operate correctly, and no hardware changes are required.
+
 The Araknis AN-110-SW-C-5 is a 5 port Unmanaged+ gigabit network switch based on the RTL8367N switch controller. It supports Snap One's OvrC (oversee) cloud remote management solution. As is, the firmware is pretty bear-bones, including only some basic status information and an option to disable OvrC.
 
-When I commandeered this switch out of the trash pile from a restaurant remodel I was pretty disappointed to learn that while it does have a web interface, it does not support any useful features that even the most basic of managed switch would support. However, after opening it up and researching the RTL8367N switch controller I found [this article](https://github.com/libc0607/Realtek_switch_hacking/blob/master/RTL8367N-GS105Ev2.md) by libc0607 describing the process for flashing a different switch with the same Realtek chip using firmware for a Netgear GS105E v2 (which also uses the RTL8367N). 
-
-The article describes how to make some hardware modifications to their switch, however in my case I did not have to change any hardware to make Netgear's firmware function on the Araknis switch. 
+When I commandeered this switch out of the trash pile from a restaurant remodel I was pretty disappointed to learn that while it does have a web interface, it does not support any useful features that even the most basic of managed switch would support. However, after opening it up and researching the RTL8367N switch controller I found [this guide](https://github.com/libc0607/Realtek_switch_hacking/blob/master/RTL8367N-GS105Ev2.md) by libc0607 describing the process for flashing a different switch with the same Realtek chip using firmware for a Netgear GS105E v2 (which also uses the RTL8367N). libc0607's guide describes how to make some hardware modifications to their switch, however in my case I did not have to change any hardware to make Netgear's firmware function on the Araknis switch.
 
 ## Known Issues
 After flashing almost all of the functions of the switch seem to work perfectly. All of the LEDs work and correspond with the correct switch port and the switch can do full gigabit speed (via iperf).
@@ -22,6 +23,8 @@ There are no guarantees about the functionality of the switch, see the [disclaim
 ## Preparing the New Firmware
 
 Download the full flash dump `gs105e_v2_fullflash_dcef09e1aed8.bin` from [libc0607's Realtek_switch_hacking repository](https://github.com/libc0607/Realtek_switch_hacking/blob/master/gs105e_v2_fullflash_dcef09e1aed8.bin). This contains the bootloader, kernel, software, and configuration for a Netgear switch.
+
+ **Note:** This firmware is provided by a third party and is not officially distributed by Netgear. Before proceeding, please read the [disclaimer](#disclaimer) at the end of this guide.
 
 Before we flash the firmware, we have to make some modifications.
 
