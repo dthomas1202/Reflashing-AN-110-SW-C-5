@@ -11,10 +11,18 @@ The Araknis AN-110-SW-C-5 is a 5 port Unmanaged+ gigabit network switch based on
 
 When I commandeered this switch out of the trash pile from a restaurant remodel I was pretty disappointed to learn that while it does have a web interface, it does not support any useful features that even the most basic of managed switch would support. However, after opening it up and researching the RTL8367N switch controller I found [this guide](https://github.com/libc0607/Realtek_switch_hacking/blob/master/RTL8367N-GS105Ev2.md) by libc0607 describing the process for flashing a different switch with the same Realtek chip using firmware for a Netgear GS105E v2 (which also uses the RTL8367N). libc0607's guide describes how to make some hardware modifications to their switch, however in my case I did not have to change any hardware to make Netgear's firmware function on the Araknis switch.
 
+### Update
+I have had this switch running for about 6 months now and have not had any problems with it.
+
+I have also had success with doing this procedure on another RTL8367N based switch: the ZyXEL GS-105I.
+However I had to solder in my own flash chip and resistors as it is an unmanaged switch.
+I also had to remove the pull down resistor on the UART RX line, as i believe that pin is used for the reset button in the Netgear firmware.
+
 ## Known Issues
 After flashing almost all of the functions of the switch seem to work perfectly. All of the LEDs work and correspond with the correct switch port and the switch can do full gigabit speed (via iperf).
 
-**However**, the reset button does not seem to work, so make sure you don’t forget your password. This likely requires a hardware mod to fix.
+**However**, the reset button does not seem to work, so make sure you don’t forget your password.
+I believe the Netgear firmware uses the UART RX pin for the reset button, so more than likely you can just bridge the existing reset button circuit with the UART RX pin to fix this, but I haven't tried this.
 
 I also encountered a weird glitch, if power saving is disabled when switch port 1 is connected, port 1 will stop working. Unless you disable power saving when it is disconnected, then once its disabled everything seems to work fine again.
 
@@ -51,7 +59,7 @@ The MAC address of the switch is stored in the flash chip, we are overwriting th
 	
 	For example: with a MAC address of `11:22:33:AA:BB:CC` it should read as:
 	```
-	... FF FF FF FF 11 22 33 44 AA BB CC 00 FF FF FF FF ...
+	... FF FF FF FF 11 22 33 AA BB CC 00 FF FF FF FF ...
 	                ^
 	                Offset: 0xFC000
 	```
@@ -75,15 +83,11 @@ Unfortunately, the firmware upgrade utility in the web interface does not seem t
 	```
 	# flashrom -p linux_spi:dev=/dev/spidev0.0,spispeed=1024 -r an-110-sw-c-5-original.bin
 	```
-	Additionally, read the flash chip 2 or 3 more times and make sure the hashes match to ensure your setup is reliable.
+	Additionally, verify the dump 2 or 3 times to ensure your setup is reliable.
 	```
-	# flashrom -p linux_spi:dev=/dev/spidev0.0,spispeed=1024 -r an-110-sw-c-5-original-1.bin
-	# flashrom -p linux_spi:dev=/dev/spidev0.0,spispeed=1024 -r an-110-sw-c-5-original-2.bin
-	# flashrom -p linux_spi:dev=/dev/spidev0.0,spispeed=1024 -r an-110-sw-c-5-original-3.bin
-	...
-	# sha256sum an-110-sw-c-5-original.bin*
+	# flashrom -p linux_spi:dev=/dev/spidev0.0,spispeed=1024 -v an-110-sw-c-5-original.bin
 	```
-	As one more check, `hexdump` one of the files and make sure its not all `00` or `FF`, if it is you have a bad connection.
+	As one more check, `hexdump` the file and make sure its not all `00` or `FF`, if it is you have a bad connection.
 	
 4.  Now flash the firmware file you prepared above.
 	```
