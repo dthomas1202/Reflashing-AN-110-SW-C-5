@@ -12,7 +12,7 @@ The Araknis AN-110-SW-C-5 is a 5 port Unmanaged+ gigabit network switch based on
 When I commandeered this switch out of the trash pile from a restaurant remodel I was pretty disappointed to learn that while it does have a web interface, it does not support any useful features that even the most basic of managed switch would support. However, after opening it up and researching the RTL8367N switch controller I found [this guide](https://github.com/libc0607/Realtek_switch_hacking/blob/master/RTL8367N-GS105Ev2.md) by libc0607 describing the process for flashing a different switch with the same Realtek chip using firmware for a Netgear GS105E v2 (which also uses the RTL8367N). libc0607's guide describes how to make some hardware modifications to their switch, however in my case I did not have to change any hardware to make Netgear's firmware function on the Araknis switch.
 
 ### Update
-I have had this switch running for about 6 months now and have not had any problems with it.
+I have had this switch running for almost a year now and have not had any problems with it.
 
 I have also had success with doing this procedure on another RTL8367N based switch: the ZyXEL GS-105I.
 However I had to solder in my own flash chip and resistors as it is an unmanaged switch.
